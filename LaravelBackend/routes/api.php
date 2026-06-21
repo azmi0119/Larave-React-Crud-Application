@@ -18,10 +18,13 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::get('/users', function () {
-    $users = \App\Models\User::all();
-    return response()->json($users);
+Route::middleware('throttle:120,1')->group(function () {
+    Route::get('/users', function () {
+        $users = \App\Models\User::paginate(5);
+        return response()->json($users);
+    });
 });
+
 
 Route::get('/users/{id}', function ($id) {
     $user = \App\Models\User::find($id);
