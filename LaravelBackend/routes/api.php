@@ -18,11 +18,18 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::middleware('throttle:120,1')->group(function () {
-    Route::get('/users', function () {
-        $users = \App\Models\User::paginate(5);
-        return response()->json($users);
-    });
+// With pagination
+// Route::middleware('throttle:120,1')->group(function () {
+//     Route::get('/users', function () {
+//         $users = \App\Models\User::paginate(5);
+//         return response()->json($users);
+//     });
+// });
+
+// Without pagination
+Route::get('/users', function () {
+    $users = \App\Models\User::all();
+    return response()->json($users);
 });
 
 
